@@ -58,7 +58,7 @@ func stop() -> void:
 
 func pause() -> void:
 	if not is_started():
-		NFB_Logger.loge("The state machine has not started running yet.")
+		push_error("The state machine has not started running yet.")
 		return
 	
 	status = STATUS_PAUSED
@@ -68,7 +68,7 @@ func pause() -> void:
 
 func resume() -> void:
 	if not is_started():
-		NFB_Logger.loge("The state machine has not started running yet.")
+		push_error("The state machine has not started running yet.")
 		return
 	
 	status = STATUS_RUNNING

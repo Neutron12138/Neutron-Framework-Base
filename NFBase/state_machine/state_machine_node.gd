@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 
 func start(state : StringName = EMPTY_STATE) -> void:
 	if not has_node(NodePath(state)):
-		NFB_Logger.loge("Unable to find node: \"%s\"." % state)
+		push_error("Unable to find node: \"", state, "\".")
 		return
 	
 	super.start(state)
@@ -50,7 +50,7 @@ func resume() -> void:
 
 func change_state(target_state : StringName) -> void:
 	if not has_node(NodePath(target_state)):
-		Logger.loge("Unable to find node: \"%s\"." % target_state)
+		push_error("Unable to find node: \"", target_state, "\".")
 		return
 	
 	super.change_state(target_state)

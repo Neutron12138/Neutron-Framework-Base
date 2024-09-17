@@ -7,6 +7,8 @@ signal crashed
 
 
 
+#region
+
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_CRASH:
@@ -17,6 +19,8 @@ func _notification(what: int) -> void:
 
 func _initialize() -> void:
 	_add_resource_savers_and_loaders()
+
+#endregion
 
 
 
