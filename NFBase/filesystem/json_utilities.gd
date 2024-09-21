@@ -3,17 +3,17 @@ extends RefCounted
 
 
 
-static func load_json_from_string(text : String) -> JSON:
+static func load_json_from_string(text : String, keep_text: bool = false) -> JSON:
 	var json : JSON = JSON.new()
-	var err : Error = json.parse(text)
+	var err : Error = json.parse(text, keep_text)
 	
-	if err != OK:
-		push_error("Failed to parse JSON, error line: ",
-		json.get_error_line(), ", error message: \"",
-		json.get_error_message(), "\".")
-		return null
+	if err == OK:
+		return json
 	
-	return json
+	push_error("Failed to parse JSON, error line: ",
+	json.get_error_line(), ", error message: \"",
+	json.get_error_message(), "\".")
+	return null
 
 
 

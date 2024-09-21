@@ -20,7 +20,8 @@ var scene_tree : SceneTree = null:
 var current_scene : Node = null:
 	set(value):
 		if not value.is_inside_tree():
-			push_error("The scene to be changed (", value, ") is not in the scene tree (", scene_tree, ").")
+			push_error("The scene to be changed (", value,
+			") is not in the scene tree (", scene_tree, ").")
 			return
 		
 		if value == self:
@@ -65,7 +66,8 @@ func change_scene(scene : Node, remove_old_one : bool = true) -> Error:
 
 func _change_to_new_scene(new_scene : Node, remove_old_one : bool = true) -> Error:
 	if new_scene.is_inside_tree():
-		push_warning("The new scene (", new_scene, ") is already in the scene tree, there is no need to add it again.")
+		push_warning("The new scene (", new_scene,\
+		") is already in the scene tree, there is no need to add it again.")
 	else:
 		scene_tree.root.add_child(new_scene)
 	

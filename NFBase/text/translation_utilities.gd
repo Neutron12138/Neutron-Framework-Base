@@ -1,0 +1,2 @@
+class_name NFB_TranslationUtilities
+extends Node
