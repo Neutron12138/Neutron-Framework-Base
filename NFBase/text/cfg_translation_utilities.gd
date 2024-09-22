@@ -15,16 +15,16 @@ const MESSAGES : StringName = &"messages"
 static func is_cfg_valid(cfg : ConfigFile) -> bool:
 	if is_instance_valid(cfg):
 		return true
-	else:
-		push_error("Parameter \"cfg\" cannot be a null pointer.")
-		return false
+	
+	push_error("Parameter \"cfg\" cannot be a null pointer.")
+	return false
 
 static func is_translation_valid(translation : Translation) -> bool:
 	if is_instance_valid(translation):
 		return true
-	else:
-		push_error("Parameter \"translation\" cannot be a null pointer.")
-		return false
+	
+	push_error("Parameter \"translation\" cannot be a null pointer.")
+	return false
 
 #endregion
 
@@ -34,11 +34,11 @@ static func is_translation_valid(translation : Translation) -> bool:
 
 static func _parse_info(cfg : ConfigFile, translation : Translation) -> Error:
 	if not cfg.has_section(INFO):
-		push_error("CFG translation files must have a section: \"\".")
-		return ERR_INVALID_PARAMETER
+		push_error("CFG translation file must have a section: \"\".")
+		return ERR_PARSE_ERROR
 	
 	if not cfg.has_section_key(INFO, LANGUAGE):
-		push_error("CFG translation files must have a key: \"language\".")
+		push_error("CFG translation file must have a key: \"language\".")
 		return ERR_PARSE_ERROR
 	
 	translation.locale = str(cfg.get_value(INFO, LANGUAGE))
@@ -65,12 +65,12 @@ static func parse_info(cfg : ConfigFile, translation : Translation) -> Error:
 
 static func _parse_messages(cfg : ConfigFile, translation : Translation) -> void:
 	if not cfg.has_section(MESSAGES):
-		push_error("CFG translation files must have a section: \"messages\".")
+		push_error("CFG translation file must have a section: \"messages\".")
 		return
 	
 	var context : StringName = cfg.get_value(INFO, CONTEXT, &"")
 	
-	for src in cfg.get_section_keys(MESSAGES):
+	for src : StringName in cfg.get_section_keys(MESSAGES):
 		var xlated : String = str(cfg.get_value(MESSAGES, src))
 		translation.add_message(src, xlated, context)
 

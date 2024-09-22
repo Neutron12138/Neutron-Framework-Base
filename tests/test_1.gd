@@ -71,7 +71,13 @@ func _ready() -> void:
 	print(solver.solve(damage3, effects))
 	
 	var cfg : ConfigFile = NFB_CFGUtilities.load_cfg_from_file("res://tests/translation.cfg")
-	var translation : Translation = NFB_CFGTranslationUtilities.parse(cfg)
-	if translation != null:
-		TranslationServer.add_translation(translation)
-	print(tr("TEST_TEXT"))
+	var translation1 : Translation = NFB_CFGTranslationUtilities.parse(cfg)
+	if translation1 != null:
+		TranslationServer.add_translation(translation1)
+	print(tr("TEST_TEXT1"))
+	
+	var json : JSON = NFB_JSONUtilities.load_json_from_file("res://tests/translation.json")
+	var translation2 : Translation = NFB_JSONTranslationUtilities.parse(json)
+	if translation2 != null:
+		TranslationServer.add_translation(translation2)
+	print(tr("TEST_TEXT2"))
