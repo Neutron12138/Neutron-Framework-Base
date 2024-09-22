@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Neutron Framework Base"
 config/tags=PackedStringArray("project")
-run/main_scene="res://tests/test_1.tscn"
+run/main_scene="res://tests/test_2.tscn"
 run/main_loop_type="NFB_Main"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"

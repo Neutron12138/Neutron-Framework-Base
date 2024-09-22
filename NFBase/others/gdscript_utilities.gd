@@ -1,4 +1,4 @@
-class_name GDScriptUtilities
+class_name NFB_GDScriptUtilities
 extends RefCounted
 
 
@@ -28,7 +28,10 @@ static func load_script_from_string(source_code : String) -> GDScript:
 
 static func load_script_from_file(path : String, skip_cr : bool = false) -> GDScript:
 	var text : String = NFB_FileUtilities.get_file_text(path, skip_cr)
-	return load_script_from_string(text)
+	var script : GDScript = load_script_from_string(text)
+	script.resource_name = path
+	script.resource_path = path
+	return script
 
 
 

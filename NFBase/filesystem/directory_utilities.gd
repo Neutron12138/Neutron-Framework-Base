@@ -71,3 +71,10 @@ static func get_all_from_dir(path : String, dirs_first : bool = true, full : boo
 	var files : PackedStringArray = get_files_from_dir(path, full)
 	
 	return dirs + files if dirs_first else files + dirs
+
+
+
+static func get_parent_dir_name(path : String, delimiter : String = "/") -> String:
+	var parent_dir : String = path.get_base_dir()
+	var prefix : String = parent_dir.get_base_dir() + delimiter
+	return parent_dir.trim_prefix(prefix)
