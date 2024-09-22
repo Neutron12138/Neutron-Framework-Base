@@ -42,10 +42,6 @@ static func _parse_info(cfg : ConfigFile, translation : Translation) -> Error:
 		return ERR_PARSE_ERROR
 	
 	translation.locale = str(cfg.get_value(INFO, LANGUAGE))
-	
-	if not cfg.has_section_key(INFO, CONTEXT):
-		return OK
-	
 	return OK
 
 static func parse_info(cfg : ConfigFile, translation : Translation) -> Error:
@@ -68,10 +64,10 @@ static func _parse_messages(cfg : ConfigFile, translation : Translation) -> void
 		push_error("CFG translation file must have a section: \"messages\".")
 		return
 	
-	var context : StringName = cfg.get_value(INFO, CONTEXT, &"")
+	var context : StringName = str(cfg.get_value(INFO, CONTEXT, &""))
 	
 	for src : StringName in cfg.get_section_keys(MESSAGES):
-		var xlated : String = str(cfg.get_value(MESSAGES, src))
+		var xlated : StringName = str(cfg.get_value(MESSAGES, src))
 		translation.add_message(src, xlated, context)
 
 static func parse_messages(cfg : ConfigFile, translation : Translation) -> Error:

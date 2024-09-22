@@ -26,7 +26,7 @@ static func open_user_data_directory() -> DirAccess:
 
 
 
-static func get_files_from_dir(path : String, full : bool = true) -> Array[String]:
+static func get_files_from_dir(path : String, full : bool = true) -> PackedStringArray:
 	if not (path.ends_with("/") or path.ends_with("\\")):
 		path += "/"
 	
@@ -34,18 +34,19 @@ static func get_files_from_dir(path : String, full : bool = true) -> Array[Strin
 	if not is_instance_valid(dir):
 		return []
 	
-	var files : Array[String] = dir.get_files()
+	var files : PackedStringArray = dir.get_files()
 	
 	if not full:
 		return files
 	
 	for i in range(files.size()):
 		files[i] = path + files[i]
+	
 	return files
 
 
 
-static func get_dirs_from_dir(path : String, full : bool = true) -> Array[String]:
+static func get_dirs_from_dir(path : String, full : bool = true) -> PackedStringArray:
 	if not path.ends_with("/") or path.ends_with("\\"):
 		path += "/"
 	
@@ -53,13 +54,14 @@ static func get_dirs_from_dir(path : String, full : bool = true) -> Array[String
 	if not is_instance_valid(dir):
 		return []
 	
-	var dirs : Array[String] = dir.get_directories()
+	var dirs : PackedStringArray = dir.get_directories()
 	
 	if not full:
 		return dirs
 	
 	for i in range(dirs.size()):
 		dirs[i] = path + dirs[i]
+	
 	return dirs
 
 

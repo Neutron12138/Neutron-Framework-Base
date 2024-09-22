@@ -25,17 +25,6 @@ static func is_translation_valid(translation : Translation) -> bool:
 	push_error("Parameter \"translation\" cannot be a null pointer.")
 	return false
 
-static func is_string_type(key : String, dict : Dictionary) -> bool:
-	var value : Variant = dict[key]
-	
-	if value is String:
-		return true
-	
-	push_error("The value of the key \"", key,
-	"\" must be of String type, but now it is the \"",
-	type_string(typeof(value)), "\" type.")
-	return false
-
 #endregion
 
 
@@ -47,17 +36,7 @@ static func _parse_info(dict : Dictionary, translation : Translation) -> Error:
 		push_error("JSON translation file must have a key: \"language\".")
 		return ERR_PARSE_ERROR
 	
-	if not is_string_type(LANGUAGE, dict):
-		return ERR_PARSE_ERROR
-	
-	if not dict.has(CONTEXT):
-		return OK
-	
-	if not is_string_type(CONTEXT, dict):
-		return ERR_PARSE_ERROR
-	
-	translation.locale = dict[LANGUAGE]
-	
+	translation.locale = str(dict[LANGUAGE])
 	return OK
 
 static func parse_info(dict : Dictionary, translation : Translation) -> Error:
@@ -86,13 +65,11 @@ static func _parse_messages(dict : Dictionary, translation : Translation) -> voi
 		type_string(typeof(messages)), "\" type.")
 		return
 	
-	var context : StringName = dict.get(CONTEXT, &"")
+	var context : StringName = str(dict.get(CONTEXT, &""))
 	
 	for src : StringName in messages:
-		if not is_string_type(src, messages):
-			continue
-		
-		translation.add_message(src, messages[src], context)
+		var xlated : StringName = str(messages[src])
+		translation.add_message(src, xlated, context)
 	
 	return
 

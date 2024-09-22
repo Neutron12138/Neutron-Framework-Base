@@ -70,6 +70,7 @@ func _ready() -> void:
 	print(solver.solve(damage2, effects))
 	print(solver.solve(damage3, effects))
 	
+	'''
 	var cfg : ConfigFile = NFB_CFGUtilities.load_cfg_from_file("res://tests/translation.cfg")
 	var translation1 : Translation = NFB_CFGTranslationUtilities.parse(cfg)
 	if translation1 != null:
@@ -81,3 +82,7 @@ func _ready() -> void:
 	if translation2 != null:
 		TranslationServer.add_translation(translation2)
 	print(tr("TEST_TEXT2"))
+	'''
+	
+	NFB_TranslationUtilities.add_translations_from_dir("res://tests/")
+	print(tr("TEST_TEXT1"), " ", tr("TEST_TEXT2"))

@@ -20,12 +20,12 @@ static func analyse_path(path : String, mod_path : String = "") -> String:
 
 
 
-static func file_extension_filter(extensions : Array[String], filename : String) -> bool:
+static func file_extension_filter(filename : String, extensions : PackedStringArray) -> bool:
 	for ext in extensions:
 		if filename.ends_with(ext):
 			return true
 	return false
 
 static func filter_file_by_extension(files : Array[String], extensions : PackedStringArray) -> PackedStringArray:
-	return files.filter(func(filename : String):
-		file_extension_filter(extensions, filename))
+	return files.filter(func(filename : String) -> bool:
+		return file_extension_filter(filename, extensions))
