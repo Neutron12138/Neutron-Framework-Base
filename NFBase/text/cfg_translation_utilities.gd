@@ -5,8 +5,12 @@ extends RefCounted
 
 const LANGUAGE : StringName = &"language"
 const CONTEXT : StringName = &"context"
+const INFO : StringName = &""
+const MESSAGES : StringName = &"messages"
 
 
+
+#region check
 
 static func is_cfg_valid(cfg : ConfigFile) -> bool:
 	if is_instance_valid(cfg):
@@ -22,63 +26,82 @@ static func is_translation_valid(translation : Translation) -> bool:
 		push_error("Parameter \"translation\" cannot be a null pointer.")
 		return false
 
+#endregion
 
 
-static func _parse_section(section : String, cfg : ConfigFile, translation : Translation) -> Error:
+
+#region info
+
+static func _parse_info(cfg : ConfigFile, translation : Translation) -> Error:
+	if not cfg.has_section(INFO):
+		push_error("CFG translation files must have a section: \"\".")
+		return ERR_INVALID_PARAMETER
 	
+	if not cfg.has_section_key(INFO, LANGUAGE):
+		push_error("CFG translation files must have a key: \"language\".")
+		return ERR_PARSE_ERROR
+	
+	translation.locale = str(cfg.get_value(INFO, LANGUAGE))
+	
+	if not cfg.has_section_key(INFO, CONTEXT):
+		return OK
 	
 	return OK
 
-static func parse_section(section : String, cfg : ConfigFile, translation : Translation) -> Error:
-	if not is_cfg_valid(cfg):
-		return ERR_INVALID_PARAMETER
-	
-	if not cfg.has_section(section):
-		push_error("Unable to find section \"", section,
-		"\" in the ConfigFile (", cfg, ").")
-		return ERR_INVALID_PARAMETER
-	
-	if not is_translation_valid(translation):
-		return ERR_INVALID_PARAMETER
-	
-	return _parse_section(section, cfg, translation)
-
-
-
-static func _parse_sections(cfg : ConfigFile, translation : Translation) -> Error:
-	for section in cfg.get_sections():
-		if section.is_empty():
-			var language : Variant = cfg.get_value(section, LANGUAGE)
-			if language == null:
-				return ERR_PARSE_ERROR
-			if not (language is String or language is StringName):
-				push_error("The type of the \"language\" in ConfigFile (", cfg,
-				") is incorrect, current type: \"", type_string(typeof(language)), "\".")
-				return ERR_PARSE_ERROR
-			translation.locale = language
-		else:
-			_parse_section(section, cfg, translation)
-	return OK
-
-static func parse_sections(cfg : ConfigFile, translation : Translation) -> Error:
+static func parse_info(cfg : ConfigFile, translation : Translation) -> Error:
 	if not is_cfg_valid(cfg):
 		return ERR_INVALID_PARAMETER
 	
 	if not is_translation_valid(translation):
 		return ERR_INVALID_PARAMETER
 	
-	return _parse_sections(cfg, translation)
+	return _parse_info(cfg, translation)
+
+#endregion
 
 
 
-static func _load_translation(cfg : ConfigFile) -> Translation:
+#region messages
+
+static func _parse_messages(cfg : ConfigFile, translation : Translation) -> void:
+	if not cfg.has_section(MESSAGES):
+		push_error("CFG translation files must have a section: \"messages\".")
+		return
+	
+	var context : StringName = cfg.get_value(INFO, CONTEXT, &"")
+	
+	for src in cfg.get_section_keys(MESSAGES):
+		var xlated : String = str(cfg.get_value(MESSAGES, src))
+		translation.add_message(src, xlated, context)
+
+static func parse_messages(cfg : ConfigFile, translation : Translation) -> Error:
+	if not is_cfg_valid(cfg):
+		return ERR_INVALID_PARAMETER
+	
+	if not is_translation_valid(translation):
+		return ERR_INVALID_PARAMETER
+	
+	_parse_messages(cfg, translation)
+	return OK
+
+#endregion
+
+
+
+#region parse
+
+static func _parse(cfg : ConfigFile) -> Translation:
 	var translation : Translation = Translation.new()
-	_parse_sections(cfg, translation)
+	if _parse_info(cfg, translation) != OK:
+		return null
+	_parse_messages(cfg, translation)
 	return translation
 
-static func load_translation(path : String) -> Translation:
-	var cfg : ConfigFile = NFB_CFGUtilities.load_cfg_from_file(path)
+static func parse(cfg : ConfigFile) -> Translation:
 	if not is_instance_valid(cfg):
+		push_error("Unable to parse an null instance.")
 		return null
 	
-	return _load_translation(cfg)
+	return _parse(cfg)
+
+#endregion
