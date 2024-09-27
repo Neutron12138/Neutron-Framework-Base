@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl12y16ghyvis"]
+[gd_scene load_steps=4 format=3 uid="uid://bl12y16ghyvis"]
 
 [ext_resource type="Script" path="res://tests/test_2.gd" id="1_4b2l6"]
 [ext_resource type="Script" path="res://NFBase/scene/event_dispatcher.gd" id="2_ds8ch"]
+[ext_resource type="Script" path="res://NFBase/scene/interface_resizer.gd" id="3_uebpe"]
 
 [node name="test2" type="Node"]
 script = ExtResource("1_4b2l6")
@@ -14,5 +15,26 @@ offset_bottom = 23.0
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("2_ds8ch")
+mode = 0
+
+[node name="NFB_InterfaceResizer" type="Node" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("3_uebpe")
+target = NodePath("../VBoxContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "114514"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "1919810"
 
 [connection signal="mouse_moved" from="NFB_EventDispatcher" to="." method="_on_nfb_event_dispatcher_mouse_moved"]
