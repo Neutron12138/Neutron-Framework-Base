@@ -3,5 +3,5 @@ extends RefCounted
 
 
 
-class Effect extends RefCounted:
+class BasicEffect extends RefCounted:
 	pass

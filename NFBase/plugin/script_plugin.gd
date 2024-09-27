@@ -25,3 +25,12 @@ func finalize() -> void:
 	
 	if object.get_class() == "Object":
 		object.free.call_deferred()
+
+
+
+func _to_string() -> String:
+	return str("NFB Script Plugin ", {
+		"name" : name,
+		"gdscript" : gdscript,
+		"object" : object
+	})

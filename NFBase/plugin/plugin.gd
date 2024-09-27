@@ -12,3 +12,8 @@ func initialize() -> void:
 
 func finalize() -> void:
 	pass
+
+
+
+func _to_string() -> String:
+	return str("NFB Plugin ", { "name" : name })

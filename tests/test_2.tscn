@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bl12y16ghyvis"]
+[gd_scene load_steps=3 format=3 uid="uid://bl12y16ghyvis"]
 
 [ext_resource type="Script" path="res://tests/test_2.gd" id="1_4b2l6"]
+[ext_resource type="Script" path="res://NFBase/scene/event_dispatcher.gd" id="2_ds8ch"]
 
 [node name="test2" type="Node"]
 script = ExtResource("1_4b2l6")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="NFB_EventDispatcher" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_ds8ch")
+
+[connection signal="mouse_moved" from="NFB_EventDispatcher" to="." method="_on_nfb_event_dispatcher_mouse_moved"]

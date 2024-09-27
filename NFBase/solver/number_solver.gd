@@ -3,7 +3,7 @@ extends NFB_BasicSolver
 
 
 
-class NumberEffect extends Effect:
+class NumberEffect extends BasicEffect:
 	func effect(input : Variant) -> Variant:
 		return input
 
